@@ -50,7 +50,7 @@ def mover_archivos(origen, destino):
 
 # Especifica la carpeta de origen y la carpeta de destino
 carpeta_origen = "C:\\Users\\Marti Curto Vendrell\\Python\\origen"
-carpeta_destino = "C:\\Users\\Marti Curto Vendrell\\Python\\destino"
+carpeta_destino = "C:\\Users\\Marti Curto Vendrell\\Python\\files"
 
 
 # Llama a la función para mover archivos
