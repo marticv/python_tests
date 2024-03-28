@@ -6,7 +6,7 @@ def crear_archivos_txt(carpeta):
         os.makedirs(carpeta)
 
     # Crear 60 archivos de texto en la carpeta especificada
-    for i in range(1, 49):
+    for i in range(1, 61):
         nombre_archivo = f"archivo_{i}.txt"
         ruta_archivo = os.path.join(carpeta, nombre_archivo)
         with open(ruta_archivo, 'w') as archivo:
