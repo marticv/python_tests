@@ -1,6 +1,7 @@
 import shutil
 import os
 import time
+import routes
 
 def calcular_numero_archivos(directorio):
     # Verificar si el directorio existe
@@ -49,8 +50,8 @@ def mover_archivos(origen, destino):
 
 
 # Especifica la carpeta de origen y la carpeta de destino
-carpeta_origen = "C:\\Users\\Marti Curto Vendrell\\Python\\origen"
-carpeta_destino = "C:\\Users\\Marti Curto Vendrell\\Python\\files"
+carpeta_origen = routes.carpeta_origen
+carpeta_destino = routes.carpeta_destino
 
 
 # Llama a la función para mover archivos

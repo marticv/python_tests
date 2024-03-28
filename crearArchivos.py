@@ -1,4 +1,5 @@
 import os
+import routes
 
 def crear_archivos_txt(carpeta):
     # Verificar si la carpeta existe, si no, crearla
@@ -15,5 +16,4 @@ def crear_archivos_txt(carpeta):
     print("Se han creado 60 archivos de texto en la carpeta especificada.")
 
 # Ejemplo de uso:
-carpeta_destino = 'C:\\Users\\Marti Curto Vendrell\\Python\\origen'
-crear_archivos_txt(carpeta_destino)
+crear_archivos_txt(routes.carpeta_origen)
