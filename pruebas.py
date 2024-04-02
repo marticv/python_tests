@@ -25,14 +25,14 @@ def calcular_numero_archivos(directorio):
 def mover_archivos(origen, destino):
     # Verificamos si la carpeta destino existe o sino la creamos
     if not os.path.exists(destino):
-        os.makedirs(destino)
-
-    # Obtenemos lista de ficheros en directorio
-    archivos = os.listdir(origen)
+        os.makedirs(destino)    
 
     archivos_iniciales = calcular_numero_archivos(origen)
 
     while archivos_iniciales > 0:
+
+        # Obtenemos lista de ficheros en directorio
+        archivos = os.listdir(origen)
 
         # Movemos la el archivo al destino siempre que haya menos de 50 archivos en destino para que no colapse
         for archivo in archivos:
