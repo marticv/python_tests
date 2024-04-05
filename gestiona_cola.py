@@ -18,7 +18,7 @@ def calcular_numero_archivos(directorio):
         # Verificar si el elemento es un archivo
         if os.path.isfile(ruta_elemento):
             contador_archivos += 1
-    print("numero de archivos ="+str(contador_archivos))
+    print("numero de archivos = "+str(contador_archivos))
 
     return contador_archivos
 
@@ -37,12 +37,15 @@ def mover_archivos(origen, destino):
         # Movemos la el archivo al destino siempre que haya menos de 50 archivos en destino para que no colapse
         for archivo in archivos:
             if calcular_numero_archivos(destino)<50:
+                #transformamos a path para ver si es archivo y si lo es lo movemos
                 origen_archivo = os.path.join(origen, archivo)
-                destino_archivo = os.path.join(destino, archivo)
-                shutil.move(origen_archivo, destino_archivo)
-                print(f"Archivo {archivo} movido a {destino}")
+
+                if os.path.isfile(origen_archivo):
+                    destino_archivo = os.path.join(destino, archivo)
+                    shutil.move(origen_archivo, destino_archivo)
+                    print(f"Archivo {archivo} movido a {destino}")
             else:
-                print("limite de archivos en "+destino)
+                print(f"limite de archivos en {destino}")
                 time.sleep(5)
         archivos_iniciales = calcular_numero_archivos(origen)
 
