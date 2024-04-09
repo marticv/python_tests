@@ -87,6 +87,7 @@ def mover_archivos(origen:str, destino:str, maximo_de_archivos:int):
 # Especifica la carpeta de origen y la carpeta de destino
 carpeta_origen = routes.carpeta_origen
 carpeta_destino = routes.carpeta_destino
+maximo_archivos = routes.maximo_archivos
 
 # Llama a la función para mover archivos
-mover_archivos(carpeta_origen, carpeta_destino, 250)
+mover_archivos(carpeta_origen, carpeta_destino, maximo_archivos)
