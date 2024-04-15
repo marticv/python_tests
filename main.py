@@ -3,7 +3,7 @@ import os
 import routes
 
 
-def calcular_archivos(directorio: str, extension: str = None):
+def get_file_counter(folder_path: str, extension: str = None):
     """
     Calcula el número de archivos en un directorio dado, opcionalmente filtrando por una extensión específica.
 
@@ -14,31 +14,35 @@ def calcular_archivos(directorio: str, extension: str = None):
     Retorna:
     - int: El número de archivos en el directorio. Retorna -1 si el directorio no existe.
     """
-    if not os.path.exists(directorio):
-        print(f"El directorio {directorio} no existe.")
+
+    #try to count the files in folder
+    try:
+        #Check if path exists
+        if not os.path.exists(folder_path):
+            print(f"El directorio {folder_path} no existe.")
+            return -1
+
+        file_counter = 0
+
+        #Get te total of files for the selected extension in the folder
+        for element in os.scandir(folder_path):
+            if element.is_file() and (extension is None or element.name.endswith(extension)):
+                file_counter += 1
+        print(file_counter)
+
+        return file_counter
+    
+    except Exception as e:
+        print(f"Error al contar archivos: {e}")
         return -1
 
-    contador_archivos = 0
+#Params for the script
+original_folder = routes.original_folder
+destiny_folder = routes.destiny_folder
+maximum_files = routes.maximum_files
+file_tipe= routes.file_tipe
 
-    for elemento in os.scandir(directorio):
-        if elemento.is_file() and (extension is None or elemento.name.endswith(extension)):
-            contador_archivos += 1
-    print(contador_archivos)
-
-    return contador_archivos
-
-# Especifica la carpeta de origen y la carpeta de destino
-carpeta_origen = routes.carpeta_origen
-carpeta_destino = routes.carpeta_destino
-maximo_archivos = routes.maximo_archivos
-file_tipe= routes.tipo_archivo
-
-# Llama a la función para mover archivos
-#mover_archivos(carpeta_origen, carpeta_destino, maximo_archivos)
-calcular_archivos(carpeta_origen)
-calcular_archivos(carpeta_origen,file_tipe)
-
-def mover_archivos(origen:str, destino:str, maximo_de_archivos:int):
+def move_files(source:str, destination:str, max_files:int):
     """
     Mueve los archivos .log de un directorio a otro siempre que haya espacio suficiente
 
@@ -47,34 +51,38 @@ def mover_archivos(origen:str, destino:str, maximo_de_archivos:int):
     - Maximo de archivos .log permitidos en carpeta de destino
 
     """
-    if not os.path.exists(destino):
-        os.makedirs(destino)
+    try:
+        if not os.path.exists(destination):
+            os.makedirs(destination)
 
-    num_archivos_destino = calcular_archivos(destino)
-    num_logs_origen = calcular_archivos(origen,'.log')
-   
+        archives_in_destination = get_file_counter(destination)
+        correct_files_in_source = get_file_counter(source,'.log')
+    
 
-    while num_archivos_destino < maximo_de_archivos and num_logs_origen > 0:
+        while archives_in_destination < max_files and correct_files_in_source > 0:
 
-        archivos = os.listdir(origen)
+            files = os.listdir(source)
 
-        for archivo in archivos:
-            if archivo.endswith('.log'):
-                origen_archivo = os.path.join(origen, archivo)
-                destino_archivo = os.path.join(destino, archivo)
-                if os.path.isfile(origen_archivo):  # Solo mover si es un archivo (avitamos alguna carpeta que acabe como .log)
-                    if not os.path.exists(destino_archivo):  # Verificar si el archivo ya existe en el destino
-                        try:
-                            shutil.move(origen_archivo, destino_archivo)
-                            print(f"Archivo {archivo} movido a {destino}")
-                            num_archivos_destino += 1
-                            num_logs_origen -= 1
-                        except Exception as e:
-                            print(f"Error al mover archivo {archivo}: {e}")
-            if num_archivos_destino >= 250:
-               print("carpeta de destino llena")
-               break
+            for file in files:
+                if file.endswith('.log'):
+                    source_file = os.path.join(source, file)
+                    destination_file = os.path.join(destination, file)
+                    if os.path.isfile(source_file):  # Solo mover si es un archivo (avitamos alguna carpeta que acabe como .log)
+                        if not os.path.exists(destination_file):  # Verificar si el archivo ya existe en el destino
+                            try:
+                                shutil.move(source_file, destination_file)
+                                print(f"Archivo {file} movido a {destination}")
+                                archives_in_destination += 1
+                                correct_files_in_source -= 1
+                            except Exception as e:
+                                print(f"Error al mover archivo {file}: {e}")
+                if archives_in_destination >= 250:
+                    print("carpeta de destino llena")
+                    break
 
-    print("Todos los archivos han sido movidos.")
+        print("Todos los archivos han sido movidos.")
+    
+    except Exception as e:
+        print(f"Ha sucedido un error al mover archivos: {e}")
 
-mover_archivos(carpeta_origen, carpeta_destino, maximo_archivos)
+move_files(original_folder, destiny_folder, maximum_files)

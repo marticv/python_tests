@@ -53,8 +53,8 @@ def mover_archivos(origen, destino):
 
 
 # Especifica la carpeta de origen y la carpeta de destino
-carpeta_origen = routes.carpeta_origen
-carpeta_destino = routes.carpeta_destino
+carpeta_origen = routes.original_folder
+carpeta_destino = routes.destiny_folder
 
 
 # Llama a la función para mover archivos
