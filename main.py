@@ -2,7 +2,6 @@ import shutil
 import os
 import routes
 
-
 def get_file_counter(folder_path: str, extension: str = None):
     """
     Calcula el número de archivos en un directorio dado, opcionalmente filtrando por una extensión específica.
@@ -15,7 +14,7 @@ def get_file_counter(folder_path: str, extension: str = None):
     - int: El número de archivos en el directorio. Retorna -1 si el directorio no existe.
     """
 
-    #try to count the files in folder
+    #try to count the files in folder or return -1 to indicate failure
     try:
         #Check if path exists
         if not os.path.exists(folder_path):
@@ -28,7 +27,6 @@ def get_file_counter(folder_path: str, extension: str = None):
         for element in os.scandir(folder_path):
             if element.is_file() and (extension is None or element.name.endswith(extension)):
                 file_counter += 1
-        print(file_counter)
 
         return file_counter
     
@@ -42,7 +40,7 @@ destiny_folder = routes.destiny_folder
 maximum_files = routes.maximum_files
 file_tipe= routes.file_tipe
 
-def move_files(source:str, destination:str, max_files:int):
+def move_files(source:str, destination:str, max_files:int, file_tipe:str):
     """
     Mueve los archivos .log de un directorio a otro siempre que haya espacio suficiente
 
@@ -56,9 +54,8 @@ def move_files(source:str, destination:str, max_files:int):
             os.makedirs(destination)
 
         archives_in_destination = get_file_counter(destination)
-        correct_files_in_source = get_file_counter(source,'.log')
+        correct_files_in_source = get_file_counter(source,file_tipe)
     
-
         while archives_in_destination < max_files and correct_files_in_source > 0:
 
             files = os.listdir(source)
@@ -85,4 +82,4 @@ def move_files(source:str, destination:str, max_files:int):
     except Exception as e:
         print(f"Ha sucedido un error al mover archivos: {e}")
 
-move_files(original_folder, destiny_folder, maximum_files)
+move_files(original_folder, destiny_folder, maximum_files, file_tipe)
